@@ -128,7 +128,7 @@ module.exports = {
                     console.log('Invalid arguments for command.');
                     return rl.prompt();
                 }
-                telegram.sendMessage(-19297244, "SERVER ANNOUNCEMENT:\n" + args[0]);
+                telegram.sendMessage(-19297244, "SERVER ANNOUNCEMENT:\n" + line.substring(line.indexOf(' ')));
                 return rl.prompt();
             }
 
