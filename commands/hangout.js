@@ -3,7 +3,7 @@ exports.handleCommand = function(bot, type, msg, callback) {
     var chatID = msg.chat.id;
     var hangoutsURL = "https://plus.google.com/hangouts/_/google.com/" + randomStr(27);
 
-    bot.sendMessage(chatID, "It's HANGOUT TIME! \nEveryone get here for a good time: \n" + hangoutsURL + "");
+    bot.sendMessage(chatID, "It's HANGOUT TIME! \nEveryone get in here, or else.. \n" + hangoutsURL + "");
 
     return callback(null);
 };

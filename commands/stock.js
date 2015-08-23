@@ -20,13 +20,13 @@ exports.handleCommand = function(bot, type, msg, callback) {
         var body = '';
         response.on('data', function(d) { body += d; });
         response.on('end', function() {
-            // parse as JSON
-            var data = JSON.parse(body).query.results.quote;
-
-            if (data.StockExchange === null) {
+            if (JSON.parse(body).query.results === null || JSON.parse(body).query.results.quote.StockExchange === null) {
                 bot.sendMessage(chatID,  symbol + " is not a valid ticker symbol!", {reply_to_message_id: msg["message_id"]});
                 return callback(null);
             }
+
+            // parse as JSON
+            var data = JSON.parse(body).query.results.quote;
 
             var message_txt = "The current stock data for " + symbol + " is \n" +
                               "Latest Price: " + data.LastTradePriceOnly + ", " + (data.Change < 0 ? "down" : "up") + " by " + data.Change + " points\n" +
