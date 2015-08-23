@@ -15,4 +15,4 @@ f.handleCommands(f, telegram);
 f.getLumberJack().info("Now " + "connected".green + " to Telegram!");
 
 //Initiate the command prompt
-f.setupPrompt();
+f.setupPrompt(telegram);

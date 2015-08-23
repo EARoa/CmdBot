@@ -4,7 +4,8 @@ var fs           = require('fs'),
     path         = require('path'),
     adminCheck   = require('./adminCheck.js'),
     command_list = null,
-    previous_messages = [];
+    previous_messages = [],
+    debug_enabled = false;
 
 
 module.exports = {
@@ -59,7 +60,9 @@ module.exports = {
                 telegram.on('message', function(message) {
                     if(previous_messages.indexOf(message.message_id) <= -1) {
                         previous_messages.push(message.message_id);
-                        f.getLumberJack().info("Recieved message: " + JSON.stringify(message).white);
+                        if(debug_enabled) {
+                            f.getLumberJack().info("Recieved message: " + JSON.stringify(message).white);
+                        }
 
                         var types = [
                             'text', 'audio', 'document', 'photo', 'sticker', 'video', 'contact',
@@ -99,7 +102,7 @@ module.exports = {
             });
         });
     },
-    setupPrompt: function() {
+    setupPrompt: function(telegram) {
       var readline = require('readline'),
         rl = readline.createInterface(process.stdin, process.stdout);
 
@@ -117,6 +120,15 @@ module.exports = {
 
             if(cmd === 'status') {
                 console.log('Cmdbot: Online');
+                return rl.prompt();
+            }
+
+            if(cmd === 'broadcast') {
+                if(args.length < 1) {
+                    console.log('Invalid arguments for command.');
+                    return rl.prompt();
+                }
+                telegram.sendMessage(-19297244, "SERVER ANNOUNCEMENT:\n" + args[0]);
                 return rl.prompt();
             }
 
@@ -154,12 +166,26 @@ module.exports = {
             }
 
             if(cmd === 'debug') {
-                if(args.length < 1 || args[0] != 'commands') {
+
+
+                if(args.length < 1 || (args[0] != 'commands' && args[0] != 'enable' && args[0] != 'disable')) {
                     console.log('Invalid arguments for command.');
                     return rl.prompt();
                 }
 
-                console.log("Loaded commands: " + JSON.stringify(command_list));
+                if(args[0] === 'commands') {
+                    console.log("Loaded commands: " + JSON.stringify(command_list));
+                }
+
+                if(args[0] === 'enable') {
+                    debug_enabled = true;
+                    console.log("Enabled debug logging.");
+                }
+
+                if(args[0] === 'disable') {
+                    debug_enabled = false;
+                    console.log("Disabled debug logging.");
+                }
 
                 return rl.prompt();
             }

@@ -1,0 +1,6 @@
+btc - Checks the current Bitcoin price.
+stock - Easily view current stock market positions.
+grapefruit - You know what this is.
+freedom - AHMERICAHH!
+class - Tea and Biscuits, anyone?
+hangout - Easily start a Hangout, complete with rousing alert.
