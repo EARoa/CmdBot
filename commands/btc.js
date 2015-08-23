@@ -22,9 +22,8 @@ exports.handleCommand = function(bot, type, msg, callback) {
                                               "EUR: €" + parsed.bpi.EUR.rate_float.toFixed(2) + "\n"
 
                             bot.sendMessage(chatID, message_txt, {reply_to_message_id: msg["message_id"]});
+                            return callback(null);
                     });
             }
     );
-
-    return callback(null);
 };

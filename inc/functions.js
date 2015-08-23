@@ -51,12 +51,12 @@ module.exports = {
         });
     },
     handleCommands: function(f, telegram) {
-
         f.getCommandFiles('./commands', function (_, commands) {
             command_list = commands;
             f.getCommandFiles('./handlers', function (_, handlers) {
                 telegram.on('message', function(message) {
-                    console.log(message)
+                    f.getLumberJack().info("Recieved message: " + message.text.white);
+
                     var types = [
                         'text', 'audio', 'document', 'photo', 'sticker', 'video', 'contact',
                         'location', 'new_chat_participant', 'left_chat_participant', 'new_chat_title',
@@ -76,12 +76,13 @@ module.exports = {
                     }
 
                     if(message.text[0] == '/') {
-                        if(commands[message.text.substring(1)] === undefined) {
-                            var chatID = message.chat.id;
-                            return telegram.sendMessage(chatID, "I'm afraid I don't know what command you mean. :/");
-                        }
-
-                        require(commands[message.text.substring(1)]).handleCommand(telegram, types[message.message_id], message, function(err) {
+                        // if(commands[message.text.substring(1)] === undefined) {
+                        //     var chatID = message.chat.id;
+                        //     return telegram.sendMessage(chatID, "I'm afraid I don't know what command you mean. :/");
+                        // }
+                        message.args = message.text.split(" ");
+                        message.args.shift();
+                        require(commands[message.text.substring(1).split(" ")[0]]).handleCommand(telegram, types[message.message_id], message, function(err) {
                             if(err) {
                                 var chatID = message.chat.id;
                                 f.getLumberJack().error(err);
