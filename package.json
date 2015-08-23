@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/JFKingsley/CmdBot",
   "dependencies": {
+    "googleapis": "^2.1.3",
     "lumberjack": "^1.1.1",
     "node-telegram-bot-api": "^0.12.1"
   }

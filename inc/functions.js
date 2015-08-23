@@ -55,7 +55,7 @@ module.exports = {
             command_list = commands;
             f.getCommandFiles('./handlers', function (_, handlers) {
                 telegram.on('message', function(message) {
-                    f.getLumberJack().info("Recieved message: " + message.text.white);
+                    //f.getLumberJack().info("Recieved message: " + JSON.stringify(message).white);
 
                     var types = [
                         'text', 'audio', 'document', 'photo', 'sticker', 'video', 'contact',
