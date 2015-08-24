@@ -89,7 +89,7 @@ module.exports = {
                             // }
                             message.args = message.text.split(" ");
                             message.args.shift();
-                            require(commands[message.text.substring(1).split(" ")[0]]).handleCommand(telegram, types[message.message_id], message, function(err) {
+                            require(commands[message.text.substring(1).split(" ")[0].toLowerCase()]).handleCommand(telegram, types[message.message_id], message, function(err) {
                                 if(err) {
                                     var chatID = message.chat.id;
                                     f.getLumberJack().error(err);
