@@ -23,6 +23,9 @@ module.exports = {
         return this.lumberjack;
     },
     getConfig: function() {
+        if(process.env.TELEGRAM_TOKEN) {
+            return {authToken: process.env.TELEGRAM_TOKEN}
+        }
         return require('../config/config.js');
     },
     getVersion: function() {
