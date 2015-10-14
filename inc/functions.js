@@ -2,10 +2,11 @@
 
 var fs           = require('fs'),
     path         = require('path'),
+    async        = require('async'),
     adminCheck   = require('./adminCheck.js'),
-    command_list = null,
     previous_messages = [],
-    debug_enabled = false;
+    command_list = null,
+    debug_enabled = true;
 
 
 module.exports = {
@@ -24,7 +25,7 @@ module.exports = {
     },
     getConfig: function() {
         if(process.env.TELEGRAM_TOKEN) {
-            return {authToken: process.env.TELEGRAM_TOKEN}
+            return {authToken: process.env.TELEGRAM_TOKEN};
         }
         return require('../config/config.js');
     },
@@ -57,50 +58,68 @@ module.exports = {
         });
     },
     handleCommands: function(f, telegram) {
-        f.getCommandFiles('./commands', function (_, commands) {
-            command_list = commands;
-            f.getCommandFiles('./handlers', function (_, handlers) {
-                telegram.on('message', function(message) {
-                    if(previous_messages.indexOf(message.message_id) <= -1) {
-                        previous_messages.push(message.message_id);
-                        if(debug_enabled) {
-                            f.getLumberJack().info("Recieved message: " + JSON.stringify(message).white);
+
+        async.series([
+            async.apply(f.getCommandFiles, './commands'),
+            async.apply(f.getCommandFiles, './handlers')
+        ],
+        function(err, results){
+            telegram.on('message', function(message) {
+
+                var types = [
+                    'text', 'audio', 'document', 'photo', 'sticker', 'video', 'contact',
+                    'location', 'new_chat_participant', 'left_chat_participant', 'new_chat_title',
+                    'new_chat_photo', 'delete_chat_photo', 'group_chat_created'
+                ];
+
+                async.waterfall([
+                    function(callback) {
+                        if(previous_messages.indexOf(message.message_id) <= -1) {
+                            previous_messages.push(message.message_id);
+                            if(debug_enabled) {
+                                f.getLumberJack().info("Recieved message: " + JSON.stringify(message).white);
+                            }
+                            return callback(null);
                         }
 
-                        var types = [
-                            'text', 'audio', 'document', 'photo', 'sticker', 'video', 'contact',
-                            'location', 'new_chat_participant', 'left_chat_participant', 'new_chat_title',
-                            'new_chat_photo', 'delete_chat_photo', 'group_chat_created'
-                        ];
-
-                        for(var handler in handlers) {
-                            require(handlers[handler]).handleCommand(telegram, types[message.message_id], message, function(status) {
+                        return callback(false);
+                    },
+                    function(callback) {
+                        async.each(results[1], function(handler, cb) {
+                            require(handler).handleCommand(telegram, types[message.message_id], message, function(status) {
                                 if(status === null) {
-                                    var chatID = msg.chat.id;
-                                    f.getLumberJack().error(err);
-                                    return telegram.sendMessage(chatID, "Ouch! Seems like I threw an error..");
-                                } else if(status === true) {
-                                    return;
+                                    var chatID = message.chat.id;
+                                    telegram.sendMessage(chatID, "Ouch! Seems like I threw an error..");
+                                    return cb(false);
                                 }
-                            });
-                        }
 
+                                return cb(null);
+                            });
+                        }, callback);
+                    },
+                    function(callback) {
                         if(message.text[0] == '/') {
-                            // if(commands[message.text.substring(1)] === undefined) {
-                            //     var chatID = message.chat.id;
-                            //     return telegram.sendMessage(chatID, "I'm afraid I don't know what command you mean. :/");
-                            // }
+                            var command = message.text.substring(1).split(" ")[0].split("@cmdtechbot")[0];
+
                             message.args = message.text.split(" ");
                             message.args.shift();
-                            require(commands[message.text.substring(1).split(" ")[0].toLowerCase()]).handleCommand(telegram, types[message.message_id], message, function(err) {
+
+                            require(results[0][command.toLowerCase()]).handleCommand(telegram, types[message.message_id], message, function(err) {
                                 if(err) {
                                     var chatID = message.chat.id;
-                                    f.getLumberJack().error(err);
-                                    return telegram.sendMessage(chatID, "Ouch! Seems like I threw an error..");
+                                    telegram.sendMessage(chatID, "Ouch! Seems like I threw an error..");
+                                    return callback(err);
                                 }
+
+                                return callback(null);
                             });
                         }
                     }
+                ], function (err, result) {
+                    if(err) {
+                        f.getLumberJack().error(err);
+                    }
+                    // result now equals 'done'
                 });
             });
         });
@@ -131,7 +150,11 @@ module.exports = {
                     console.log('Invalid arguments for command.');
                     return rl.prompt();
                 }
-                telegram.sendMessage(-19297244, "SERVER ANNOUNCEMENT:\n" + line.substring(line.indexOf(' ')));
+                var chats = [-19297244, -24763138];
+
+                for(var chat in chats) {
+                    telegram.sendMessage(chats[chat], "SERVER ANNOUNCEMENT:\n" + line.substring(line.indexOf(' ')).substring(1).replace("\\n", "\n"));
+                }
                 return rl.prompt();
             }
 
@@ -169,7 +192,6 @@ module.exports = {
             }
 
             if(cmd === 'debug') {
-
 
                 if(args.length < 1 || (args[0] != 'commands' && args[0] != 'enable' && args[0] != 'disable')) {
                     console.log('Invalid arguments for command.');

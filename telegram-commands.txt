@@ -4,3 +4,4 @@ grapefruit - You know what this is.
 freedom - AHMERICAHH!
 class - Tea and Biscuits, anyone?
 hangout - Easily start a Hangout, complete with rousing alert.
+quotebook - Quickly jump to the list we all know and love.
