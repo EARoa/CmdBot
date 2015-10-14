@@ -150,10 +150,12 @@ module.exports = {
                     console.log('Invalid arguments for command.');
                     return rl.prompt();
                 }
-                var chats = [-19297244, -24763138];
+                var chats = [42648612];
+
+                debugger;
 
                 for(var chat in chats) {
-                    telegram.sendMessage(chats[chat], "SERVER ANNOUNCEMENT:\n" + line.substring(line.indexOf(' ')).substring(1).replace("\\n", "\n"));
+                    telegram.sendMessage(chats[chat], "SERVER ANNOUNCEMENT:\n" + line.substring(line.indexOf(' ')).substring(1).replace(/\\n/g, '\n'));
                 }
                 return rl.prompt();
             }
