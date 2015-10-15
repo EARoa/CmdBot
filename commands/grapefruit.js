@@ -1,6 +1,6 @@
 var adminCheck = require('../inc/adminCheck.js');
 
-exports.handleCommand = function(bot, type, msg, callback) {
+exports.handleCommand = function(bot, msg, callback) {
     //Generate the details view
     var chatID = msg.chat.id;
 

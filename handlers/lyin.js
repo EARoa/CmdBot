@@ -1,4 +1,4 @@
-exports.handleCommand = function(bot, type, msg, callback) {
+exports.handleMessage = function(bot, msg, callback) {
     //Grab the chat ID
     var chatID = msg.chat.id;
 

@@ -24,8 +24,8 @@ module.exports = {
         return this.lumberjack;
     },
     getConfig: function() {
-        if(process.env.TELEGRAM_TOKEN) {
-            return {authToken: process.env.TELEGRAM_TOKEN};
+        if(process.env.TELEGRAM_TOKEN && process.env.TRANSLATE_ID && process.env.TRANSLATE_SECRET) {
+            return {authToken: process.env.TELEGRAM_TOKEN, translateID: process.env.TRANSLATE_ID, translateSecret: process.env.TRANSLATE_SECRET};
         }
         return require('../config/config.js');
     },
@@ -66,11 +66,6 @@ module.exports = {
         function(err, results){
             telegram.on('message', function(message) {
 
-                var types = [
-                    'text', 'audio', 'document', 'photo', 'sticker', 'video', 'contact',
-                    'location', 'new_chat_participant', 'left_chat_participant', 'new_chat_title',
-                    'new_chat_photo', 'delete_chat_photo', 'group_chat_created'
-                ];
                 async.waterfall([
                     function(callback) {
                         if(previous_messages.indexOf(message.message_id) <= -1) {
@@ -85,7 +80,7 @@ module.exports = {
                     },
                     function(callback) {
                         async.each(results[1], function(handler, cb) {
-                            require(handler).handleCommand(telegram, types[message.message_id], message, function(status) {
+                            require(handler).handleMessage(telegram, message, function(status) {
                                 if(status != true && status != false) {
                                     var chatID = message.chat.id;
                                     telegram.sendMessage(chatID, "Ouch! Seems like I threw an error..");
@@ -107,7 +102,7 @@ module.exports = {
                                 return callback(null);
                             }
 
-                            require(results[0][command.toLowerCase()]).handleCommand(telegram, types[message.message_id], message, function(err) {
+                            require(results[0][command.toLowerCase()]).handleCommand(telegram, message, function(err) {
                                 if(err) {
                                     var chatID = message.chat.id;
                                     telegram.sendMessage(chatID, "Ouch! Seems like I threw an error..");
