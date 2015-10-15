@@ -20,7 +20,7 @@ exports.handleMessage = function(bot, msg, callback) {
             return callback(err);
         }
 
-        if(language != "en" && language != "gl" && language != "ca" && language != "pl" && language != null && msg.text.length > 3) {
+        if(language != "en" && language != "gl" && language != "ca" && language != "pl" && language != null && (msg.text.length > 2 && language == "fr")) {
             var params = {
                 text: msg.text,
                 from: language,
