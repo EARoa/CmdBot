@@ -71,7 +71,6 @@ module.exports = {
                     'location', 'new_chat_participant', 'left_chat_participant', 'new_chat_title',
                     'new_chat_photo', 'delete_chat_photo', 'group_chat_created'
                 ];
-
                 async.waterfall([
                     function(callback) {
                         if(previous_messages.indexOf(message.message_id) <= -1) {
@@ -87,7 +86,7 @@ module.exports = {
                     function(callback) {
                         async.each(results[1], function(handler, cb) {
                             require(handler).handleCommand(telegram, types[message.message_id], message, function(status) {
-                                if(status === null) {
+                                if(status != true && status != false) {
                                     var chatID = message.chat.id;
                                     telegram.sendMessage(chatID, "Ouch! Seems like I threw an error..");
                                     return cb(false);
@@ -103,6 +102,10 @@ module.exports = {
 
                             message.args = message.text.split(" ");
                             message.args.shift();
+
+                            if(results[0][command.toLowerCase()] == null) {
+                                return callback(null);
+                            }
 
                             require(results[0][command.toLowerCase()]).handleCommand(telegram, types[message.message_id], message, function(err) {
                                 if(err) {

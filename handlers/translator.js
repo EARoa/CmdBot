@@ -12,7 +12,7 @@ exports.handleCommand = function(bot, type, msg, callback) {
     var chatID = msg.chat.id;
 
     if(!msg.text) {
-        return;
+        return callback(false);
     }
 
     translateClient.detect({text: msg.text}, function(err, language) {
@@ -38,6 +38,8 @@ exports.handleCommand = function(bot, type, msg, callback) {
                 bot.sendMessage(chatID, "\"" + data + "\"", {reply_to_message_id: msg["message_id"]});
                 return callback(true);
             });
+        } else {
+            return callback(false);
         }
     });
 };

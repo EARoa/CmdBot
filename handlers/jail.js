@@ -3,7 +3,7 @@ exports.handleCommand = function(bot, type, msg, callback) {
     var chatID = msg.chat.id;
 
     if(!msg.text) {
-        return;
+        return callback(false);
     }
 
     msg.text = msg.text.toLowerCase()

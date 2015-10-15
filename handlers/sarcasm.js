@@ -3,7 +3,7 @@ exports.handleCommand = function(bot, type, msg, callback) {
     var chatID = msg.chat.id;
 
     if(!msg.text) {
-        return;
+        return callback(false);
     }
 
     if(msg.text.split(" ").indexOf("/s") > -1 || msg.text.split(" ").indexOf("</s>") > -1) {

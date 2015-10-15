@@ -3,9 +3,8 @@ exports.handleCommand = function(bot, type, msg, callback) {
     var chatID = msg.chat.id;
 
     if(!msg.text) {
-        return;
+        return callback(false);
     }
-
 
     msg.text = msg.text.toLowerCase()
     if(msg.text.indexOf("fuck") > -1 && msg.text.indexOf("this") > -1 && msg.text.indexOf("shit") > -1 && (msg.text.indexOf("im") > -1 || msg.text.indexOf("i'm") > -1 || msg.text.indexOf("i’m") > -1) && msg.text.indexOf("out") > -1) {
