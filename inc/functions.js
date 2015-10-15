@@ -92,6 +92,10 @@ module.exports = {
                         }, callback);
                     },
                     function(callback) {
+                        if(!message.text) {
+                            return callback(null);
+                        }
+
                         if(message.text[0] == '/') {
                             var command = message.text.substring(1).split(" ")[0].split("@cmdtechbot")[0];
 
