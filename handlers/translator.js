@@ -20,11 +20,11 @@ exports.handleMessage = function(bot, msg, callback) {
             return callback(err);
         }
 
-        if(msg.text.length < 4 && language == "fr") {
-            return callback(null);
+        if(msg.text.length < 3 && language != "zh-CHT") {
+            return callback(false);
         }
 
-        if(language != "en" && language != "gl" && language != "ca" && language != "pl" && language != null) {
+        if(language != "en" && language != "gl" && language != "ca" && language != "pl" && language != "de" && language != "sq" && language != null) {
             var params = {
                 text: msg.text,
                 from: language,

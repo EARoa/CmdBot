@@ -58,6 +58,15 @@ module.exports = {
         });
     },
     handleCommands: function(f, telegram) {
+        //Polyfill
+        Object.prototype.getKeyByValue = function( value ) {
+            for( var prop in this ) {
+                if( this.hasOwnProperty( prop ) ) {
+                     if( this[ prop ] === value )
+                         return prop;
+                }
+            }
+        }
 
         async.series([
             async.apply(f.getCommandFiles, './commands'),
@@ -79,11 +88,13 @@ module.exports = {
                         return callback(false);
                     },
                     function(callback) {
-                        async.each(results[1], function(handler, cb) {
-                            require(handler).handleMessage(telegram, message, function(status) {
+                        async.each(Object.keys(results[1]), function(handler, cb) {
+                            debugger;
+                            require(results[1][handler]).handleMessage(telegram, message, function(status) {
                                 if(status != true && status != false) {
                                     var chatID = message.chat.id;
-                                    telegram.sendMessage(chatID, "Ouch! Seems like I threw an error..");
+                                    debugger;
+                                    telegram.sendMessage(chatID, "Ouch! Seems like I threw a handler error..");
                                     return cb(false);
                                 }
 
@@ -109,7 +120,7 @@ module.exports = {
                             require(results[0][command.toLowerCase()]).handleCommand(telegram, message, function(err) {
                                 if(err) {
                                     var chatID = message.chat.id;
-                                    telegram.sendMessage(chatID, "Ouch! Seems like I threw an error..");
+                                    telegram.sendMessage(chatID, "Ouch! Seems like I threw a command error..");
                                     return callback(err);
                                 }
 
