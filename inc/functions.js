@@ -79,11 +79,10 @@ module.exports = {
                     },
                     function(callback) {
                         async.each(Object.keys(results[1]), function(handler, cb) {
-                            debugger;
                             require(results[1][handler]).handleMessage(telegram, message, function(status) {
                                 if(status != true && status != false) {
                                     var chatID = message.chat.id;
-                                    debugger;
+
                                     telegram.sendMessage(chatID, "Ouch! Seems like I threw a handler error..");
                                     return cb(false);
                                 }

@@ -10,8 +10,8 @@ var MsTranslator = require('mstranslator'),
 exports.handleMessage = function(bot, msg, callback) {
     //Grab the chat ID
     var chatID = msg.chat.id;
-    // Chinese, Spanish, Italian, French, German
-    var languageWhitelist = ['zh-chs', 'es', 'it', 'fr', 'de'];
+    // Chinese, Spanish, Italian, French, German, Hebrew
+    var languageWhitelist = ['zh-chs', 'es', 'it', 'fr', 'de', 'he'];
 
     if(!msg.text) {
         return callback(false);
@@ -22,21 +22,22 @@ exports.handleMessage = function(bot, msg, callback) {
             return callback(err);
         }
 
-        if(languageWhitelist.indexOf(language.toLowerCase()) > -1 && msg.text.length > 2 && language != null) {
+        console.log("Detected language: " + language + "");
+
+        if(languageWhitelist.indexOf(language.toLowerCase()) > -1 && msg.text.length > 2 && msg.text[0] != "@" && language != null) {
             var params = {
                 text: msg.text,
                 from: language,
                 to: 'en'
             };
 
-            console.log("Detected language: " + language + ", translating..");
+            console.log("Language passed checks, translating..");
             // Don't worry about access token, it will be auto-generated if needed.
             translateClient.translate(params, function(err, data) {
                 if(err) {
                     return callback(err);
                 }
 
-                console.log(data + '\n');
                 bot.sendMessage(chatID, "\"" + data + "\"", {reply_to_message_id: msg["message_id"]});
                 return callback(true);
             });
