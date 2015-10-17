@@ -22,7 +22,7 @@ exports.handleMessage = function(bot, msg, callback) {
             return callback(err);
         }
 
-        if(languageWhitelist.indexOf(language.toLowerCase()) > -1 && language != null) {
+        if(languageWhitelist.indexOf(language.toLowerCase()) > -1 && msg.text.length > 2 && language != null) {
             var params = {
                 text: msg.text,
                 from: language,
