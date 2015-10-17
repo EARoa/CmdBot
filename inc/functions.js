@@ -58,16 +58,6 @@ module.exports = {
         });
     },
     handleCommands: function(f, telegram) {
-        //Polyfill
-        Object.prototype.getKeyByValue = function( value ) {
-            for( var prop in this ) {
-                if( this.hasOwnProperty( prop ) ) {
-                     if( this[ prop ] === value )
-                         return prop;
-                }
-            }
-        }
-
         async.series([
             async.apply(f.getCommandFiles, './commands'),
             async.apply(f.getCommandFiles, './handlers')

@@ -10,6 +10,8 @@ var MsTranslator = require('mstranslator'),
 exports.handleMessage = function(bot, msg, callback) {
     //Grab the chat ID
     var chatID = msg.chat.id;
+    // Chinese, Spanish, Italian, French, German
+    var languageWhitelist = ['zh-chs', 'es', 'it', 'fr', 'de'];
 
     if(!msg.text) {
         return callback(false);
@@ -20,11 +22,7 @@ exports.handleMessage = function(bot, msg, callback) {
             return callback(err);
         }
 
-        if(msg.text.length < 3 && language != "zh-CHT") {
-            return callback(false);
-        }
-
-        if(language != "en" && language != "gl" && language != "ca" && language != "pl" && language != "de" && language != "sq" && language != null) {
+        if(languageWhitelist.indexOf(language.toLowerCase()) > -1 && language != null) {
             var params = {
                 text: msg.text,
                 from: language,
