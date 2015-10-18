@@ -9,8 +9,10 @@ exports.handleMessage = function(bot, msg, callback) {
     msg.text = msg.text.toLowerCase()
 
     if(msg.text.indexOf("jail") > -1 || msg.text.indexOf("prison") > -1) {
-        bot.sendMessage(chatID, "^(school)", {reply_to_message_id: msg["message_id"]});
-        return callback(true);
+       if (!msg.text.toLowerCase().indexOf("jailbreak") > -1) {
+         bot.sendMessage(chatID, "^(school)", {reply_to_message_id: msg["message_id"]});
+         return callback(true);
+       }
     }
 
     return callback(false);
