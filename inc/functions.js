@@ -6,7 +6,7 @@ var fs           = require('fs'),
     adminCheck   = require('./adminCheck.js'),
     previous_messages = [],
     command_list = null,
-    debug_enabled = true;
+    debug_enabled = false;
 
 
 module.exports = {
