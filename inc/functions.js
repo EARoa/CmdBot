@@ -64,7 +64,6 @@ module.exports = {
         ],
         function(err, results){
             telegram.on('message', function(message) {
-
                 async.waterfall([
                     function(callback) {
                         if(previous_messages.indexOf(message.message_id) <= -1) {
