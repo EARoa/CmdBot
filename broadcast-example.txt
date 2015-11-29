@@ -1,1 +1,1 @@
-broadcast CmdBot V1.3 is now Live:\n\n+ Added /vote for easy polling.\n+ Refactored code to use less time on responses.\n+ Added the ability to stalk my creator's Spotify.\n* Fixed several bugs with translation.
+broadcast CmdBot V1.3 is now Live:\n\n+ Added /vote for easy polling.\n+ Refactored code to use less time on responses.\n+ Added the ability to stalk my creator's Spotify.\n* Fixed several bugs with translation.\n* Fixed /quotebook
