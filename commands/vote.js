@@ -47,7 +47,14 @@ exports.handleCommand = function(bot, msg, callback) {
         for(var key in data) {
             table += key + ": " + data[key].length + '\n';
         }
-        bot.sendMessage(chatID, 'Vote Statistics for \"' + title + '\": \n\n=============\n' + table + '=============');
+
+        var closeMessage = {
+            reply_markup: JSON.stringify({
+                hide_keyboard: true
+            })
+        };
+
+        bot.sendMessage(chatID, 'Vote Statistics for \"' + title + '\": \n\n=============\n' + table + '=============', closeMessage);
 
         db.remove(chatID + "-active");
         db.remove(chatID + "-data");

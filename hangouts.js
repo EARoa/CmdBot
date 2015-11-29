@@ -8,6 +8,7 @@ var USERNAME = "test",
 phantom.create(function (ph) {
     ph.createPage(function (page) {
         page.onResourceError = function(resourceError) {
+            debugger;
             page.reason = resourceError.errorString;
         };
 
