@@ -2,7 +2,8 @@ exports.handleCommand = function(bot, msg, callback) {
     //Generate the details view
     var chatID = msg.chat.id;
 
-    if(chatID != -19297244) {
+    //Main chat, and No Drama ID's
+    if(chatID != -53434730 && chatID != -51467589) {
         return callback(null);
     }
 

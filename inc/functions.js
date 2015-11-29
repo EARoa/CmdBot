@@ -24,8 +24,8 @@ module.exports = {
         return this.lumberjack;
     },
     getConfig: function() {
-        if(process.env.TELEGRAM_TOKEN && process.env.TRANSLATE_ID && process.env.TRANSLATE_SECRET) {
-            return {authToken: process.env.TELEGRAM_TOKEN, translateID: process.env.TRANSLATE_ID, translateSecret: process.env.TRANSLATE_SECRET};
+        if(process.env.TELEGRAM_TOKEN && process.env.TRANSLATE_ID && process.env.TRANSLATE_SECRET && process.env.LASTFM_ID && process.env.LASTFM_KEY) {
+            return {authToken: process.env.TELEGRAM_TOKEN, translateID: process.env.TRANSLATE_ID, translateSecret: process.env.TRANSLATE_SECRET, lastFMID: process.env.LASTFM_ID, lastFMKey: process.env.LASTFM_KEY};
         }
         return require('../config/config.js');
     },
@@ -98,8 +98,16 @@ module.exports = {
                         if(message.text[0] == '/') {
                             var command = message.text.substring(1).split(" ")[0].split("@cmdtechbot")[0];
 
-                            message.args = message.text.split(" ");
+                            message.args = message.text.match(/"[^"]*"|[^ ]+/g) || [];
                             message.args.shift();
+
+                            for(var i in message.args) {
+                                var arg = message.args[i];
+                                if(arg[arg.length - 1] == "\"") {
+                                    arg = arg.slice(0, -1);
+                                    message.args[i] = arg.substring(1);
+                                }
+                            }
 
                             if(results[0][command.toLowerCase()] == null) {
                                 return callback(null);
@@ -151,7 +159,7 @@ module.exports = {
                     console.log('Invalid arguments for command.');
                     return rl.prompt();
                 }
-                var chats = [-19297244, -24763138];
+                var chats = [-51467589, -24763138, -53434730];
 
                 for(var chat in chats) {
                     telegram.sendMessage(chats[chat], "SERVER ANNOUNCEMENT:\n" + line.substring(line.indexOf(' ')).substring(1).replace(/\\n/g, '\n'));

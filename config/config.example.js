@@ -8,3 +8,5 @@
 exports.authToken = process.env.TELEGRAM_TOKEN;
 exports.translateID = process.env.TRANSLATE_ID;
 exports.translateSecret = process.env.TRANSLATE_SECRET;
+exports.lastFMID = process.env.LASTFM_ID;
+exports.lastFMKey = process.env.LASTFM_KEY;

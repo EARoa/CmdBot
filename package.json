@@ -20,7 +20,6 @@
     "async": "^1.4.2",
     "lumberjack": "^1.1.1",
     "mstranslator": "^2.0.2",
-    "node-telegram-bot-api": "^0.12.1",
-    "text-db": "^0.1.8"
+    "node-telegram-bot-api": "^0.12.1"
   }
 }

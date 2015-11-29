@@ -17,12 +17,6 @@ exports.handleMessage = function(bot, msg, callback) {
         return callback(true);
     }
 
-    //Removed because people lynched the bot over it
-    // if(msg.text.indexOf("literally") > -1) {
-    //     bot.sendMessage(chatID, "**figuratively", {reply_to_message_id: msg["message_id"]});
-    //     return callback(true);
-    // }
-
     if(msg.text.indexOf("crying") > -1) {
         bot.sendMessage(chatID, "^they had a brief chuckle", {reply_to_message_id: msg["message_id"]});
         return callback(true);

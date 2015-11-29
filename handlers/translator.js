@@ -12,8 +12,9 @@ exports.handleMessage = function(bot, msg, callback) {
     var chatID = msg.chat.id;
     // Chinese, Spanish, Italian, French, German, Hebrew
     var languageWhitelist = ['zh-chs', 'es', 'it', 'fr', 'de', 'he'];
+    var phraseBlacklist = ['no', 'lol', 'lel', 'heh', 'hah', 'hehe', 'ayy', 'ahaha'];
 
-    if(!msg.text) {
+    if(!msg.text || phraseBlacklist.indexOf(msg.text.toLowerCase().replace(/[.,-\/#!$%\^&\*;:{}=\-_`~()]/g,"")) > -1) {
         return callback(false);
     }
 
@@ -22,7 +23,7 @@ exports.handleMessage = function(bot, msg, callback) {
             return callback(err);
         }
 
-        console.log("Detected language: " + language + "");
+        console.log("Detected language: " + language + " for message \"" + msg.text + "\"");
 
         if(languageWhitelist.indexOf(language.toLowerCase()) > -1 && msg.text.length > 2 && msg.text[0] != "@" && language != null) {
             var params = {
