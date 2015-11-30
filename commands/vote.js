@@ -28,6 +28,7 @@ exports.handleCommand = function(bot, msg, callback) {
 
     var title = msg.args[0], chunks = [], data = {};
     msg.args.shift();
+    msg.args = eliminateDuplicates(msg.args);
 
     for(var i in msg.args) {
         data[msg.args[i]] = [];
@@ -45,7 +46,7 @@ exports.handleCommand = function(bot, msg, callback) {
             table = "";
 
         for(var key in data) {
-            table += key + ": " + data[key].length + '(' + data[key].join(", ") + ')\n';
+            table += key + ": " + data[key].length + (data[key].length > 0 ? ' (' + data[key].join(", ") + ')' : '') + '\n';
         }
 
         var closeMessage = {
@@ -58,7 +59,7 @@ exports.handleCommand = function(bot, msg, callback) {
 
         db.remove(chatID + "-active");
         db.remove(chatID + "-data");
-    }, 20 * 1000);
+    }, 30 * 1000);
 
     var voteMessage = {
         reply_markup: JSON.stringify({
@@ -71,3 +72,18 @@ exports.handleCommand = function(bot, msg, callback) {
     bot.sendMessage(chatID, "VOTE TIME! \n Question: \"" + title + "\" \n \n You have 20 seconds to answer.", voteMessage);
     return callback(null);
 };
+
+function eliminateDuplicates(arr) {
+  var i,
+      len=arr.length,
+      out=[],
+      obj={};
+
+  for (i=0;i<len;i++) {
+    obj[arr[i]]=0;
+  }
+  for (i in obj) {
+    out.push(i);
+  }
+  return out;
+}
