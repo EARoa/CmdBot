@@ -19,7 +19,7 @@ exports.handleCommand = function(bot, msg, callback) {
         return callback(null);
     }
 
-    if(msg.args.length > 10) {
+    if(msg.args.length > 11) {
         bot.sendMessage(chatID,  "That's too many answers.");
         return callback(null);
     }
@@ -45,7 +45,7 @@ exports.handleCommand = function(bot, msg, callback) {
             table = "";
 
         for(var key in data) {
-            table += key + ": " + data[key].length + '\n';
+            table += key + ": " + data[key].length + '(' + data[key].join(", ") + ')\n';
         }
 
         var closeMessage = {
