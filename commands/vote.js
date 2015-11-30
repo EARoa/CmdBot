@@ -69,7 +69,7 @@ exports.handleCommand = function(bot, msg, callback) {
         })
     };
 
-    bot.sendMessage(chatID, "VOTE TIME! \n Question: \"" + title + "\" \n \n You have 20 seconds to answer.", voteMessage);
+    bot.sendMessage(chatID, "VOTE TIME! \n Question: \"" + title + "\" \n \n You have 30 seconds to answer.", voteMessage);
     return callback(null);
 };
 
