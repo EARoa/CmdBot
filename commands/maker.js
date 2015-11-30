@@ -19,7 +19,7 @@ exports.handleCommand = function(bot, msg, callback) {
                 response = "My glorious, amazing and handsome creator is Jonathan Kingsley! (@JFKingsley)";
 
                 debugger;
-            if(parsed['@attr'].nowplaying == 'true') {
+            if(parsed['@attr'] != undefined && parsed['@attr'].nowplaying == 'true') {
                 response += "\nHe's currently listening to " + parsed.name + " by " + parsed.artist["#text"] + " on Spotify.";
             }
             bot.sendMessage(chatID, response);
