@@ -10,6 +10,9 @@ exports.handleMessage = function(bot, msg, callback) {
     if(msg.text.indexOf("fuck") > -1 && msg.text.indexOf("this") > -1 && msg.text.indexOf("shit") > -1 && (msg.text.indexOf("im") > -1 || msg.text.indexOf("i'm") > -1 || msg.text.indexOf("i’m") > -1) && msg.text.indexOf("out") > -1) {
         bot.sendMessage(chatID, "https://www.youtube.com/watch?v=5FjWe31S_0g", {reply_to_message_id: msg["message_id"]});
         return callback(true);
+    } else if (msg.text.indexOf("kthnxbye") > -1) {
+        bot.sendMessage(chatID, "(fuck this shit im out)\nhttps://www.youtube.com/watch?v=5FjWe31S_0g", {reply_to_message_id: msg["message_id"]});
+        return callback(true);
     }
 
     return callback(false);
