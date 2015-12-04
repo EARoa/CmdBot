@@ -28,7 +28,9 @@ exports.handleCommand = function(bot, msg, callback) {
             // parse as JSON
             var data = JSON.parse(body).query.results.quote;
 
-            var message_txt = "The current stock data for " + symbol + " is \n" +
+            console.log(data);
+
+            var message_txt = "The current stock data for " + data.Name + " (" + symbol.toUpperCase() + ") is \n" +
                               "Latest Price: " + data.LastTradePriceOnly + ", " + (data.Change < 0 ? "down" : "up") + " by " + data.Change + " points\n" +
                               "Last Trade: " + data.LastTradeDate + ' ' + data.LastTradeTime + "\n" +
                               "Stock Exchange: " + (data.StockExchange).replace("NMS", "NASDAQ").toUpperCase() + "\n"
