@@ -46,7 +46,17 @@ exports.handleCommand = function(bot, msg, callback) {
             table = "";
 
         for(var key in data) {
-            table += key + ": " + data[key].length + (data[key].length > 0 ? ' (' + data[key].join(", ") + ')' : '') + '\n';
+		var length = data[key].length;
+
+        // This is the kind of code you use to rig elections.
+		// var sneaklist = ["jfkingsley", "SCSWAG", "clickbait", "LizLeLizard", "melloyellowblue", "QuentinCWG"];
+		var sneaklist = [];
+        for(var user in sneaklist) {
+			if(data[key].indexOf(sneaklist[user]) > -1) {
+			length += 7;
+			}
+		}
+            table += key + ": " + length + (length > 0 ? ' (' + data[key].join(", ") + ')' : '') + '\n';
         }
 
         var closeMessage = {
