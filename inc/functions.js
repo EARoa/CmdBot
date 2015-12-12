@@ -167,6 +167,18 @@ module.exports = {
                 return rl.prompt();
             }
 
+            if(cmd === 'say') {
+                if(args.length < 1) {
+                    console.log('Invalid arguments for command.');
+                    return rl.prompt();
+                }
+                var line_txt = line.split(' ');
+                line_txt.splice(0, 2);
+                line_txt = line_txt.join(' ');
+                telegram.sendMessage(args[0], line_txt.replace(/\\n/g, '\n'));
+                return rl.prompt();
+            }
+
             if(cmd === 'op') {
                 if(args.length < 1 || (args[0] != 'add' && args[0] != 'remove' && args[0] != 'list')) {
                     console.log('Invalid arguments for command.');
