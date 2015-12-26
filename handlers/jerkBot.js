@@ -33,5 +33,9 @@ exports.handleMessage = function(bot, msg, callback) {
         bot.sendMessage(chatID, "You can and you will even.", {reply_to_message_id: msg["message_id"]});
         return callback(true);
     }
+    if(msg.text.indexOf("hoverboard") > -1) {
+        bot.sendMessage(chatID, "^^ (it doesn't really hover) ^^", {reply_to_message_id: msg["message_id"]});
+        return callback(true);
+    }
     return callback(false);
 };
