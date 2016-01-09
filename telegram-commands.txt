@@ -7,3 +7,4 @@ hangout - Easily start a Hangout, complete with rousing alert.
 quotebook - Quickly jump to the list we all know and love.
 tacos - For the glory of the Sombrero.
 vote - Run polls quickly and easily.
+djkhaled - 🔑 to success.
